@@ -24,6 +24,9 @@ chmod 640 /etc/zabbix/k8s-stats.json
 ```
 You then need to use `{$K8S_CLUSTER_NAME} => my-cloud-123` on zabbix host you have attached the template to
 
+## Multi-Cluster support
+Simply add more dicts to `k8s_stats.json`. Sample config file provided in repo has two clusters added.
+
 ## How to create zabbix user in Kubernetes
 ```bash
 $ kubectl apply -n kube-system -f zabbix-user-example.yml 
