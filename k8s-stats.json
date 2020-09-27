@@ -1,0 +1,10 @@
+{
+    "my_cluster": {
+        "api_url": "https://my_cluster:6443",
+        "access_token": "my_cluster_token"
+    },
+    "my_cluster_2": {
+        "api_url": "https://my_cluster_2:6443",
+        "access_token": "my_cluster_2_token"
+    }
+}

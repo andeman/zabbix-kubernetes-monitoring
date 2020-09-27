@@ -2,10 +2,27 @@
 [zabbix-kubernetes-monitoring](https://github.com/sleepka/zabbix-kubernetes-monitoring) is zabbix-agent script and template for zabbix server. It is used for Kubernetes monitoring by Zabbix. Easy to deploy and configure. Auto discovery of pods, deployments, services, etc.
 
 # Installation
-1. Copy [k8s-stats.py](https://raw.githubusercontent.com/sleepka/zabbix-kubernetes-monitoring/master/k8s-stats.py) to /etc/zabbix/scripts/ and [k8s.conf](https://raw.githubusercontent.com/sleepka/zabbix-kubernetes-monitoring/master/k8s.conf) to /etc/zabbix/zabbix_agentd.d/. Remind to give execute permission to the file: ``chmod +x k8s-stats.py``
-2. Import Zabbix template ([k8s-zabbix-template.xml](https://raw.githubusercontent.com/sleepka/zabbix-kubernetes-monitoring/master/k8s-zabbix-template.xml)) to Zabbix server
-3. Create zabbix user in Kubernetes (can use [zabbix-user-example.yml](https://raw.githubusercontent.com/sleepka/zabbix-kubernetes-monitoring/master/zabbix-user-example.yml)) and set it's token and API server url in [k8s-stats.py](https://raw.githubusercontent.com/sleepka/zabbix-kubernetes-monitoring/master/k8s-stats.py).
-4. Apply template to host
+1. Copy `k8s-stats.py` to /usr/lib/zabbix/externalscripts and `k8s-stats.json` to /etc/zabbix/ and fix file permissions
+```
+cp k8s-stats.py /usr/lib/zabbix/externalscripts/
+cp k8s-stats.json /etc/zabbix/
+chmod +x /usr/lib/zabbix/externalscripts/k8s-stats.py
+chown zabbix. /etc/zabbix/k8s-stats.json
+chmod 640 /etc/zabbix/k8s-stats.json
+```
+2. Import Zabbix template `k8s-zabbix-template.xml` to Zabbix server
+3. Create zabbix user in Kubernetes (can use `zabbix-user-example.yml`) and set it's token and API server url in `k8s-stats.json`. The root item key names in JSON config refer to 
+4. Apply template to host `{$K8S_CLUSTER_NAME}` macro value in zabbix configuration, see step 5.
+5. Update `{$K8S_CLUSTER_NAME}` macro value appropriately in host configuration. Example:
+```json
+{
+    "my-cloud-123": {
+        "api_url": "https://my_cloud_address:6443",
+        "access_token": "my_cloud_token"
+    }
+}
+```
+You then need to use `{$K8S_CLUSTER_NAME} => my-cloud-123` on zabbix host you have attached the template to
 
 ## How to create zabbix user in Kubernetes
 ```bash
