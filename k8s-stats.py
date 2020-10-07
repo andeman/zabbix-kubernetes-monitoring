@@ -1,5 +1,5 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env python3
+# See: https://github.com/jpuris/zabbix-kubernetes-monitoring
 import json
 import os
 import ssl
@@ -11,34 +11,28 @@ try:
 except ImportError:
     import urllib2
 
-config_file = "/etc/zabbix/k8s-stats.json"
 tmp_file_dir = "/tmp/"
 cache_ttl = 60
+
 # Script parameters
 cluster = sys.argv[1]
-method = sys.argv[2]
-target = sys.argv[3]
+api_server = sys.argv[2]
+token = sys.argv[3]
+
+method = sys.argv[4]
+target = sys.argv[5]
 object_namespace = None
 object_name = None
 object_state = None
 container_name = None
 
 if method == "stats":
-    object_namespace = sys.argv[4]
-    object_name = sys.argv[5]
+    object_namespace = sys.argv[6]
+    object_name = sys.argv[7]
     if target == "container" or target == "pod" or target == "deployments":
-        object_state = sys.argv[6]
+        object_state = sys.argv[8]
     if target == "container":
-        container_name = sys.argv[7]
-
-if os.path.isfile(config_file) and os.access(config_file, os.R_OK):
-    with open(config_file, "r") as json_file:
-        config = json.load(json_file)
-else:
-    print("Config file is missing or not readable. File [{}]".format(config_file))
-
-api_server = config[cluster]["api_url"]
-token = config[cluster]["access_token"]
+        container_name = sys.argv[9]
 
 targets = [
     "pods",
@@ -97,9 +91,9 @@ if target in targets:
 
         for item in data["items"]:
             if (
-                "nodes" == target
-                or "componentstatuses" == target
-                or "apiservices" == target
+                    "nodes" == target
+                    or "componentstatuses" == target
+                    or "apiservices" == target
             ):
                 result["data"].append({"{#NAME}": item["metadata"]["name"]})
             elif "containers" == target:
@@ -128,8 +122,8 @@ if target in targets:
         if "pods" == target or "deployments" == target:
             for item in data["items"]:
                 if (
-                    item["metadata"]["namespace"] == object_namespace
-                    and item["metadata"]["name"] == object_name
+                        item["metadata"]["namespace"] == object_namespace
+                        and item["metadata"]["name"] == object_name
                 ):
                     if "statusPhase" == object_state:
                         print(item["status"]["phase"])
@@ -139,8 +133,8 @@ if target in targets:
                     elif "statusReady" == object_state:
                         for status in item["status"]["conditions"]:
                             if status["type"] == "Ready" or (
-                                status["type"] == "Available"
-                                and "deployments" == target
+                                    status["type"] == "Available"
+                                    and "deployments" == target
                             ):
                                 print(status["status"])
                                 break
@@ -148,8 +142,8 @@ if target in targets:
                         for status in item["status"]["containerStatuses"]:
                             if status["name"] == container_name:
                                 if (
-                                    status["ready"]
-                                    or item["status"]["phase"] == "Succeeded"
+                                        status["ready"]
+                                        or item["status"]["phase"] == "Succeeded"
                                 ):
                                     print(True)
                                 else:
