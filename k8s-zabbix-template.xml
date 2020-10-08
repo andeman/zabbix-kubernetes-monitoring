@@ -29,7 +29,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,apiservices]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},apiservices]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -61,7 +61,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,apiservices,{#NAME},Available]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},apiservices,{#NAME},Available]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -119,7 +119,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,apiservices,{#NAME},Available].str(True)}=0</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},apiservices,{#NAME},Available].str(True)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>ApiServices {#NAME} is not in Available State</name>
@@ -164,7 +164,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,clusters]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},clusters]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -299,7 +299,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,componentstatuses]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},componentstatuses]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -331,7 +331,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,componentstatuses,{#NAME},Healthy]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},componentstatuses,{#NAME},Healthy]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -389,7 +389,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,componentstatuses,{#NAME},Healthy].count(5m,&quot;False&quot;,eq)} &gt; 4</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},componentstatuses,{#NAME},Healthy].count(5m,&quot;False&quot;,eq)} &gt; 4</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>ComponentStatuses {#NAME} is not in Healthy State</name>
@@ -434,7 +434,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,containers]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},containers]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -466,7 +466,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -526,7 +526,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>365d</trends>
@@ -584,8 +584,8 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].str(True,#3)}=0 and &#13;
-{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].nodata(300)}=0</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].str(True,#3)}=0 and &#13;
+{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].nodata(300)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) is not in Ready State</name>
@@ -601,7 +601,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}].delta(600)} &gt;  {$CONTAINER_RESTARTS}</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}].delta(600)} &gt;  {$CONTAINER_RESTARTS}</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) restart count &gt; {$CONTAINER_RESTARTS}</name>
@@ -646,7 +646,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,deployments]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -678,7 +678,7 @@
                             <type>15</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},notUpdated]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},notUpdated]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>365d</trends>
@@ -693,7 +693,7 @@
                             <snmpv3_authpassphrase/>
                             <snmpv3_privprotocol>0</snmpv3_privprotocol>
                             <snmpv3_privpassphrase/>
-                            <params>last(&quot;k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},Replicas]&quot;) - last(&quot;k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},updatedReplicas]&quot;)</params>
+                            <params>last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},Replicas]&quot;) - last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},updatedReplicas]&quot;)</params>
                             <ipmi_sensor/>
                             <authtype>0</authtype>
                             <username/>
@@ -738,7 +738,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},Replicas]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},Replicas]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>365d</trends>
@@ -798,7 +798,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},statusReady]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -858,7 +858,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},updatedReplicas]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},updatedReplicas]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>365d</trends>
@@ -916,7 +916,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},notUpdated].min(#3)}&gt;0</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},notUpdated].min(#3)}&gt;0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Deployment name {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
@@ -932,7 +932,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,deployments,{#NAMESPACE},{#NAME},statusReady].str(True,#3)}=0</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},deployments,{#NAMESPACE},{#NAME},statusReady].str(True,#3)}=0</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
@@ -977,7 +977,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,nodes]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -1009,7 +1009,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},DiskPressure]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},DiskPressure]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1069,7 +1069,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},MemoryPressure]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},MemoryPressure]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1129,7 +1129,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},OutOfDisk]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},OutOfDisk]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1189,7 +1189,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},PIDPressure]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},PIDPressure]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1247,7 +1247,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},DiskPressure].str(True)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},DiskPressure].str(True)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Node {#NAME} DiskPressure</name>
@@ -1263,7 +1263,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},MemoryPressure].str(True)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},MemoryPressure].str(True)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Node {#NAME} MemoryPressure</name>
@@ -1279,7 +1279,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},OutOfDisk].str(True)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},OutOfDisk].str(True)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Node {#NAME} OutOfDisk</name>
@@ -1295,7 +1295,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,nodes,{#NAME},PIDPressure].str(True)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},nodes,{#NAME},PIDPressure].str(True)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Node {#NAME} PIDPressure</name>
@@ -1340,7 +1340,7 @@
                     <type>10</type>
                     <snmp_community/>
                     <snmp_oid/>
-                    <key>k8s-stats.py[{$K8S_CLUSTER_NAME},discovery,pods]</key>
+                    <key>k8s.discovery[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods]</key>
                     <delay>60s</delay>
                     <status>1</status>
                     <allowed_hosts/>
@@ -1372,7 +1372,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusPhase]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusPhase]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1432,7 +1432,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusReady]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1492,7 +1492,7 @@
                             <type>10</type>
                             <snmp_community/>
                             <snmp_oid/>
-                            <key>k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusReason]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusReason]</key>
                             <delay>60s</delay>
                             <history>90d</history>
                             <trends>0</trends>
@@ -1550,7 +1550,7 @@
                     </item_prototypes>
                     <trigger_prototypes>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusPhase].str(CrashLoopBackOff)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusPhase].str(CrashLoopBackOff)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
@@ -1566,7 +1566,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusPhase].str(Failed)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusPhase].str(Failed)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
@@ -1582,7 +1582,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusPhase].str(Unknown)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusPhase].str(Unknown)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
@@ -1598,7 +1598,7 @@
                             <tags/>
                         </trigger_prototype>
                         <trigger_prototype>
-                            <expression>{Template Kubernetes cluster:k8s-stats.py[{$K8S_CLUSTER_NAME},stats,pods,{#NAMESPACE},{#NAME},statusReason].str(Evicted)}=1</expression>
+                            <expression>{Template Kubernetes cluster:k8s.stats[{$K8S_CLUSTER_NAME},{$K8S_CLUSTER_API_SERVER},{$K8S_CLUSTER_TOKEN},pods,{#NAMESPACE},{#NAME},statusReason].str(Evicted)}=1</expression>
                             <recovery_mode>0</recovery_mode>
                             <recovery_expression/>
                             <name>Pod {#NAME} (ns {#NAMESPACE}) status Evicted</name>
@@ -1643,6 +1643,14 @@
             <macros>
                 <macro>
                     <macro>{$K8S_CLUSTER_NAME}</macro>
+                    <value/>
+                </macro>
+                <macro>
+                    <macro>{$K8S_CLUSTER_API_SERVER}</macro>
+                    <value/>
+                </macro>
+                <macro>
+                    <macro>{$K8S_CLUSTER_TOKEN}</macro>
                     <value/>
                 </macro>
                 <macro>
