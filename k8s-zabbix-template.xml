@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>4.2</version>
+    <version>4.0</version>
     <date>2020-09-27T18:50:45Z</date>
     <groups>
         <group>
@@ -155,9 +155,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Clusters</name>
@@ -290,9 +287,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Component Statuses</name>
@@ -425,9 +419,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Containers</name>
@@ -637,9 +628,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Deployments</name>
@@ -968,9 +956,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Nodes</name>
@@ -1331,9 +1316,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Pods</name>
@@ -1634,9 +1616,6 @@
                     <ssl_key_password/>
                     <verify_peer>0</verify_peer>
                     <verify_host>0</verify_host>
-                    <lld_macro_paths/>
-                    <preprocessing/>
-                    <master_item/>
                 </discovery_rule>
             </discovery_rules>
             <httptests/>
@@ -1660,7 +1639,6 @@
             </macros>
             <templates/>
             <screens/>
-            <tags/>
         </template>
     </templates>
 </zabbix_export>
