@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-# See: https://github.com/jpuris/zabbix-kubernetes-monitoring
+# See: https://github.com/andeman/zabbix-kubernetes-monitoring
 import json
 import os
 import ssl
@@ -14,25 +14,33 @@ except ImportError:
 tmp_file_dir = "/tmp/"
 cache_ttl = 60
 
+config_file = "/etc/zabbix/zabbix_check_kubernetes.json"
+
 # Script parameters
 cluster = sys.argv[1]
-api_server = sys.argv[2]
-token = sys.argv[3]
-
-method = sys.argv[4]
-target = sys.argv[5]
+method = sys.argv[2]
+target = sys.argv[3]
 object_namespace = None
 object_name = None
 object_state = None
 container_name = None
 
 if method == "stats":
-    object_namespace = sys.argv[6]
-    object_name = sys.argv[7]
-    if target == "container" or target == "pod" or target == "deployments":
-        object_state = sys.argv[8]
-    if target == "container":
-        container_name = sys.argv[9]
+    object_namespace = sys.argv[4]
+    object_name = sys.argv[5]
+    if target == "containers" or target == "pods" or target == "deployments":
+        object_state = sys.argv[6]
+    if target == "containers":
+        container_name = sys.argv[7]
+
+if os.path.isfile(config_file) and os.access(config_file, os.R_OK):
+    with open(config_file, "r") as json_file:
+        config = json.load(json_file)
+else:
+    print("Config file is missing or not readable. File [{}]".format(config_file))
+
+api_server = config[cluster]["api_url"]
+token = config[cluster]["access_token"]
 
 targets = [
     "pods",
@@ -42,9 +50,10 @@ targets = [
     "apiservices",
     "componentstatuses",
 ]
-target = "pods" if "containers" == target else target
 
-if "pods" == target or "nodes" == target or "componentstatuses" == target:
+if "containers" == target:
+    api_req = "/api/v1/pods"
+elif "pods" == target or "nodes" == target or "componentstatuses" == target:
     api_req = "/api/v1/{}".format(target)
 elif "deployments" == target:
     api_req = "/apis/apps/v1/{}".format(target)
@@ -119,7 +128,7 @@ if target in targets:
         # stats
         data = json.loads(rawdata(100))
 
-        if "pods" == target or "deployments" == target:
+        if "pods" == target or "deployments" == target or "containers" == target:
             for item in data["items"]:
                 if (
                         item["metadata"]["namespace"] == object_namespace

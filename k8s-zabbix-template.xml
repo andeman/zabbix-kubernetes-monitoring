@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
-    <version>4.0</version>
-    <date>2020-09-27T18:50:45Z</date>
+    <version>4.4</version>
+    <date>2020-11-24T11:50:31Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -11,7 +11,6 @@
         <template>
             <template>Template App K8s</template>
             <name>Template App K8s</name>
-            <description/>
             <groups>
                 <group>
                     <name>Templates</name>
@@ -22,1615 +21,372 @@
                     <name>Kubernetes</name>
                 </application>
             </applications>
-            <items/>
             <discovery_rules>
                 <discovery_rule>
                     <name>Kubernetes API Services</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},apiservices]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>1h</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>ApiServices: {#NAME} Status Available</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},apiservices,{#NAME},Available]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True)}=0</expression>
+                                    <name>ApiServices {#NAME} is not in Available State</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},apiservices,{#NAME},Available].str(True)}=0</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>ApiServices {#NAME} is not in Available State</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>3</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Clusters</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},clusters]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>1h</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Cluster {#NAME} API Health Check</name>
-                            <type>19</type>
-                            <snmp_community/>
-                            <snmp_oid/>
+                            <type>HTTP_AGENT</type>
                             <key>k8s.cluster.api.health[{#NAME},{#APIURL},{$K8S_CLUSTER_NAME}]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
                             <timeout>5s</timeout>
                             <url>{#APIURL}/healthz</url>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>0</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <follow_redirects>NO</follow_redirects>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(ok)}=0</expression>
+                                    <name>API {#APIURL} for cluster {#NAME} is not OK</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.cluster.api.health[{#NAME},{#APIURL},{$K8S_CLUSTER_NAME}].str(ok)}=0</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>API {#APIURL} for cluster {#NAME} is not OK</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Component Statuses</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},componentstatuses]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>1h</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>ComponentStatuses: {#NAME} Status Healthy</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},componentstatuses,{#NAME},Healthy]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{count(5m,&quot;False&quot;,eq)} &gt; 4</expression>
+                                    <name>ComponentStatuses {#NAME} is not in Healthy State</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},componentstatuses,{#NAME},Healthy].count(5m,&quot;False&quot;,eq)} &gt; 4</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>ComponentStatuses {#NAME} is not in Healthy State</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>3</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Containers</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},containers]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>0</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) Status Ready</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
-                            <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},containers,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True,#3)}=0 and &#13;
+                                        {nodata(300)}=0</expression>
+                                    <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) is not in Ready State</name>
+                                    <priority>WARNING</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) Restart Count</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
-                            <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}]</key>
+                            <key>k8s.stats[{$K8S_CLUSTER_NAME},containers,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{delta(600)} &gt;  {$CONTAINER_RESTARTS}</expression>
+                                    <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) restart count &gt; {$CONTAINER_RESTARTS}</name>
+                                    <priority>WARNING</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].str(True,#3)}=0 and &#13;
-{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}].nodata(300)}=0</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) is not in Ready State</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>2</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}].delta(600)} &gt;  {$CONTAINER_RESTARTS}</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) restart count &gt; {$CONTAINER_RESTARTS}</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>2</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Deployments</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},deployments]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>2d</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) NOT UPDATED replicas</name>
-                            <type>15</type>
-                            <snmp_community/>
-                            <snmp_oid/>
+                            <type>CALCULATED</type>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},notUpdated]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
                             <params>last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},Replicas]&quot;) - last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},updatedReplicas]&quot;)</params>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{min(#3)}&gt;0</expression>
+                                    <name>Deployment name {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) Desired replicas</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},Replicas]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
                         </item_prototype>
                         <item_prototype>
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) Status</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True,#3)}=0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) UPDATED replicas</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},updatedReplicas]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
-                            <trends>365d</trends>
-                            <status>0</status>
-                            <value_type>3</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},notUpdated].min(#3)}&gt;0</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Deployment name {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},statusReady].str(True,#3)}=0</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Nodes</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},nodes]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>7d</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Node: {#NAME} Status: DiskPressure</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},DiskPressure]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True)}=1</expression>
+                                    <name>Node {#NAME} DiskPressure</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Node: {#NAME} Status: MemoryPressure</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},MemoryPressure]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True)}=1</expression>
+                                    <name>Node {#NAME} MemoryPressure</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Node: {#NAME} Status: OutOfDisk</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},OutOfDisk]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True)}=1</expression>
+                                    <name>Node {#NAME} OutOfDisk</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Node: {#NAME} Status: PIDPressure</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},PIDPressure]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(True)}=1</expression>
+                                    <name>Node {#NAME} PIDPressure</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},DiskPressure].str(True)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Node {#NAME} DiskPressure</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},MemoryPressure].str(True)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Node {#NAME} MemoryPressure</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},OutOfDisk].str(True)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Node {#NAME} OutOfDisk</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},PIDPressure].str(True)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Node {#NAME} PIDPressure</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
                 <discovery_rule>
                     <name>Kubernetes Pods</name>
-                    <type>0</type>
-                    <snmp_community/>
-                    <snmp_oid/>
                     <key>k8s.discovery[{$K8S_CLUSTER_NAME},pods]</key>
                     <delay>60s</delay>
-                    <status>1</status>
-                    <allowed_hosts/>
-                    <snmpv3_contextname/>
-                    <snmpv3_securityname/>
-                    <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                    <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                    <snmpv3_authpassphrase/>
-                    <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                    <snmpv3_privpassphrase/>
-                    <params/>
-                    <ipmi_sensor/>
-                    <authtype>0</authtype>
-                    <username/>
-                    <password/>
-                    <publickey/>
-                    <privatekey/>
-                    <port/>
-                    <filter>
-                        <evaltype>0</evaltype>
-                        <formula/>
-                        <conditions/>
-                    </filter>
+                    <status>DISABLED</status>
                     <lifetime>0</lifetime>
-                    <description/>
                     <item_prototypes>
                         <item_prototype>
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Phase</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(CrashLoopBackOff)}=1</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{str(Failed)}=1</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{str(Unknown)}=1</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
+                                    <priority>HIGH</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                         <item_prototype>
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Status Ready</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
                         </item_prototype>
                         <item_prototype>
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Status Failed, Reason Evicted</name>
-                            <type>0</type>
-                            <snmp_community/>
-                            <snmp_oid/>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusReason]</key>
                             <delay>60s</delay>
-                            <history>90d</history>
                             <trends>0</trends>
-                            <status>0</status>
-                            <value_type>4</value_type>
-                            <allowed_hosts/>
-                            <units/>
-                            <snmpv3_contextname/>
-                            <snmpv3_securityname/>
-                            <snmpv3_securitylevel>0</snmpv3_securitylevel>
-                            <snmpv3_authprotocol>0</snmpv3_authprotocol>
-                            <snmpv3_authpassphrase/>
-                            <snmpv3_privprotocol>0</snmpv3_privprotocol>
-                            <snmpv3_privpassphrase/>
-                            <params/>
-                            <ipmi_sensor/>
-                            <authtype>0</authtype>
-                            <username/>
-                            <password/>
-                            <publickey/>
-                            <privatekey/>
-                            <port/>
-                            <description/>
-                            <inventory_link>0</inventory_link>
+                            <value_type>TEXT</value_type>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
-                            <valuemap/>
-                            <logtimefmt/>
-                            <preprocessing/>
-                            <jmx_endpoint/>
-                            <timeout>3s</timeout>
-                            <url/>
-                            <query_fields/>
-                            <posts/>
-                            <status_codes>200</status_codes>
-                            <follow_redirects>1</follow_redirects>
-                            <post_type>0</post_type>
-                            <http_proxy/>
-                            <headers/>
-                            <retrieve_mode>0</retrieve_mode>
-                            <request_method>0</request_method>
-                            <output_format>0</output_format>
-                            <allow_traps>0</allow_traps>
-                            <ssl_cert_file/>
-                            <ssl_key_file/>
-                            <ssl_key_password/>
-                            <verify_peer>0</verify_peer>
-                            <verify_host>0</verify_host>
-                            <application_prototypes/>
-                            <master_item/>
+                            <trigger_prototypes>
+                                <trigger_prototype>
+                                    <expression>{str(Evicted)}=1</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) status Evicted</name>
+                                    <priority>AVERAGE</priority>
+                                </trigger_prototype>
+                            </trigger_prototypes>
                         </item_prototype>
                     </item_prototypes>
-                    <trigger_prototypes>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].str(CrashLoopBackOff)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].str(Failed)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].str(Unknown)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>4</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                        <trigger_prototype>
-                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusReason].str(Evicted)}=1</expression>
-                            <recovery_mode>0</recovery_mode>
-                            <recovery_expression/>
-                            <name>Pod {#NAME} (ns {#NAMESPACE}) status Evicted</name>
-                            <correlation_mode>0</correlation_mode>
-                            <correlation_tag/>
-                            <url/>
-                            <status>0</status>
-                            <priority>3</priority>
-                            <description/>
-                            <type>0</type>
-                            <manual_close>0</manual_close>
-                            <dependencies/>
-                            <tags/>
-                        </trigger_prototype>
-                    </trigger_prototypes>
-                    <graph_prototypes/>
-                    <host_prototypes/>
-                    <jmx_endpoint/>
-                    <timeout>3s</timeout>
-                    <url/>
-                    <query_fields/>
-                    <posts/>
-                    <status_codes>200</status_codes>
-                    <follow_redirects>1</follow_redirects>
-                    <post_type>0</post_type>
-                    <http_proxy/>
-                    <headers/>
-                    <retrieve_mode>0</retrieve_mode>
-                    <request_method>0</request_method>
-                    <allow_traps>0</allow_traps>
-                    <ssl_cert_file/>
-                    <ssl_key_file/>
-                    <ssl_key_password/>
-                    <verify_peer>0</verify_peer>
-                    <verify_host>0</verify_host>
                 </discovery_rule>
             </discovery_rules>
-            <httptests/>
             <macros>
                 <macro>
                     <macro>{$K8S_CLUSTER_NAME}</macro>
-                    <value/>
                 </macro>
                 <macro>
                     <macro>{$K8S_CONTAINER_RESTARTS}</macro>
                     <value>10</value>
                 </macro>
             </macros>
-            <templates/>
-            <screens/>
         </template>
     </templates>
 </zabbix_export>
