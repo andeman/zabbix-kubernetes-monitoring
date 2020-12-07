@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <zabbix_export>
     <version>4.4</version>
-    <date>2020-11-24T11:50:31Z</date>
+    <date>2020-12-07T21:33:28Z</date>
     <groups>
         <group>
             <name>Templates</name>
@@ -33,16 +33,25 @@
                             <name>ApiServices: {#NAME} Status Available</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},apiservices,{#NAME},Available]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True)}=0</expression>
+                                    <expression>{max(2m)}=0</expression>
                                     <name>ApiServices {#NAME} is not in Available State</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
@@ -62,6 +71,7 @@
                             <type>HTTP_AGENT</type>
                             <key>k8s.cluster.api.health[{#NAME},{#APIURL},{$K8S_CLUSTER_NAME}]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <applications>
@@ -93,16 +103,25 @@
                             <name>ComponentStatuses: {#NAME} Status Healthy</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},componentstatuses,{#NAME},Healthy]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{count(5m,&quot;False&quot;,eq)} &gt; 4</expression>
+                                    <expression>{max(5m)}=0</expression>
                                     <name>ComponentStatuses {#NAME} is not in Healthy State</name>
                                     <priority>AVERAGE</priority>
                                 </trigger_prototype>
@@ -121,17 +140,26 @@
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) Status Ready</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},containers,{#NAMESPACE},{#NAME},containerReady,{#CONTAINER}]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True,#3)}=0 and &#13;
-                                        {nodata(300)}=0</expression>
+                                    <expression>{max(#3)}=0 and &#13;
+{nodata(300)}=0</expression>
                                     <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) is not in Ready State</name>
                                     <priority>WARNING</priority>
                                 </trigger_prototype>
@@ -141,6 +169,7 @@
                             <name>Pod {#NAME} container {#CONTAINER} (ns {#NAMESPACE}) Restart Count</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},containers,{#NAMESPACE},{#NAME},containerRestarts,{#CONTAINER}]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
@@ -168,6 +197,7 @@
                             <type>CALCULATED</type>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},notUpdated]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <params>last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},Replicas]&quot;) - last(&quot;k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},updatedReplicas]&quot;)</params>
                             <applications>
                                 <application>
@@ -176,9 +206,31 @@
                             </applications>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{min(#3)}&gt;0</expression>
-                                    <name>Deployment name {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                    <expression>{min(#2)}&gt;0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Deployment {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},notUpdated].min({$ESCALATION_1_DELAY})}&gt;0</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}&gt;0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Deployment {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},notUpdated].min({$ESCALATION_2_DELAY})}&gt;0</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_2_DELAY})}&gt;0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) number of not updated replicas &gt; 0</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -186,6 +238,7 @@
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) Desired replicas</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},Replicas]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
@@ -196,18 +249,49 @@
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) Status</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True,#3)}=0</expression>
+                                    <expression>{max(#2)}=0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},statusReady].max({$ESCALATION_1_DELAY})}=0</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{max({$ESCALATION_1_DELAY})}=0</expression>
                                     <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},statusReady].max({$ESCALATION_2_DELAY})}=0</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{max({$ESCALATION_2_DELAY})}=0</expression>
+                                    <name>Deployment {#NAME} (ns {#NAMESPACE}) is not in Available Status</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -215,6 +299,7 @@
                             <name>Deployments: {#NAME} (ns {#NAMESPACE}) UPDATED replicas</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},deployments,{#NAMESPACE},{#NAME},updatedReplicas]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
@@ -234,18 +319,49 @@
                             <name>Node: {#NAME} Status: DiskPressure</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},DiskPressure]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True)}=1</expression>
+                                    <expression>{min(#2)}=1</expression>
+                                    <name>Node {#NAME} DiskPressure</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} DiskPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},DiskPressure].min({$ESCALATION_1_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=1</expression>
                                     <name>Node {#NAME} DiskPressure</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} DiskPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},DiskPressure].min({$ESCALATION_2_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=1</expression>
+                                    <name>Node {#NAME} DiskPressure</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -253,18 +369,49 @@
                             <name>Node: {#NAME} Status: MemoryPressure</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},MemoryPressure]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True)}=1</expression>
+                                    <expression>{min(#2)}=1</expression>
+                                    <name>Node {#NAME} MemoryPressure</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} MemoryPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},MemoryPressure].min({$ESCALATION_1_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=1</expression>
                                     <name>Node {#NAME} MemoryPressure</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} MemoryPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},MemoryPressure].min({$ESCALATION_2_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=1</expression>
+                                    <name>Node {#NAME} MemoryPressure</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -272,6 +419,7 @@
                             <name>Node: {#NAME} Status: OutOfDisk</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},OutOfDisk]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <applications>
@@ -283,7 +431,7 @@
                                 <trigger_prototype>
                                     <expression>{str(True)}=1</expression>
                                     <name>Node {#NAME} OutOfDisk</name>
-                                    <priority>HIGH</priority>
+                                    <priority>WARNING</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -291,18 +439,49 @@
                             <name>Node: {#NAME} Status: PIDPressure</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},PIDPressure]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(True)}=1</expression>
+                                    <expression>{min(#2)}=1</expression>
+                                    <name>Node {#NAME} PIDPressure</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} PIDPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},PIDPressure].min({$ESCALATION_1_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=1</expression>
                                     <name>Node {#NAME} PIDPressure</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Node {#NAME} PIDPressure</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},nodes,{#NAME},PIDPressure].min({$ESCALATION_2_DELAY})}=1</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=1</expression>
+                                    <name>Node {#NAME} PIDPressure</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -319,28 +498,113 @@
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Phase</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'Running') {
+  return '0';
+} else if (value == 'Succeeded') {
+  return '1';
+} else if (value == 'Failed') {
+  return '10';
+} else if (value == 'Unknown') {
+  return '11';
+} else if (value == 'CrashLoopBackOff') {
+  return '12';
+} else if (value == 'Evicted') {
+  return '13';
+} else {
+  return '99';
+}</params>
+                                </step>
+                            </preprocessing>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(CrashLoopBackOff)}=1</expression>
+                                    <expression>{min(#2)}=12 and {max(#2)}=12</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_1_DELAY})}=12 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_1_DELAY})}=12</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=12 and {max({$ESCALATION_1_DELAY})}=12</expression>
                                     <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_2_DELAY})}=12 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_2_DELAY})}=12</expression>
+                                        </dependency>
+                                    </dependencies>
                                 </trigger_prototype>
                                 <trigger_prototype>
-                                    <expression>{str(Failed)}=1</expression>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=12 and {max({$ESCALATION_2_DELAY})}=12</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;CrashLoopBackOff&quot;</name>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min(#2)}=10 and {max(#2)}=10</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_1_DELAY})}=10 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_1_DELAY})}=10</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=10 and {max({$ESCALATION_1_DELAY})}=10</expression>
                                     <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_2_DELAY})}=10 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_2_DELAY})}=10</expression>
+                                        </dependency>
+                                    </dependencies>
                                 </trigger_prototype>
                                 <trigger_prototype>
-                                    <expression>{str(Unknown)}=1</expression>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=10 and {max({$ESCALATION_2_DELAY})}=10</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Failed&quot;</name>
+                                    <priority>DISASTER</priority>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min(#2)}=11 and {max(#2)}=11</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
+                                    <priority>WARNING</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_1_DELAY})}=11 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_1_DELAY})}=11</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_1_DELAY})}=11 and {max({$ESCALATION_1_DELAY})}=11</expression>
                                     <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
                                     <priority>HIGH</priority>
+                                    <dependencies>
+                                        <dependency>
+                                            <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
+                                            <expression>{Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].min({$ESCALATION_2_DELAY})}=11 and {Template App K8s:k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusPhase].max({$ESCALATION_2_DELAY})}=11</expression>
+                                        </dependency>
+                                    </dependencies>
+                                </trigger_prototype>
+                                <trigger_prototype>
+                                    <expression>{min({$ESCALATION_2_DELAY})}=11 and {max({$ESCALATION_2_DELAY})}=11</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) phase &quot;Unknown&quot;</name>
+                                    <priority>DISASTER</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
@@ -348,18 +612,28 @@
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Status Ready</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusReady]</key>
                             <delay>60s</delay>
-                            <trends>0</trends>
-                            <value_type>TEXT</value_type>
+                            <history>7d</history>
                             <applications>
                                 <application>
                                     <name>Kubernetes</name>
                                 </application>
                             </applications>
+                            <preprocessing>
+                                <step>
+                                    <type>JAVASCRIPT</type>
+                                    <params>if (value == 'True') {
+  return '1';
+} else {
+  return '0';
+}</params>
+                                </step>
+                            </preprocessing>
                         </item_prototype>
                         <item_prototype>
                             <name>Pod: {#NAME} (ns {#NAMESPACE}) Status Failed, Reason Evicted</name>
                             <key>k8s.stats[{$K8S_CLUSTER_NAME},pods,{#NAMESPACE},{#NAME},statusReason]</key>
                             <delay>60s</delay>
+                            <history>7d</history>
                             <trends>0</trends>
                             <value_type>TEXT</value_type>
                             <applications>
@@ -369,9 +643,9 @@
                             </applications>
                             <trigger_prototypes>
                                 <trigger_prototype>
-                                    <expression>{str(Evicted)}=1</expression>
-                                    <name>Pod {#NAME} (ns {#NAMESPACE}) status Evicted</name>
-                                    <priority>AVERAGE</priority>
+                                    <expression>{count(5m,3)}&gt;=4</expression>
+                                    <name>Pod {#NAME} (ns {#NAMESPACE}) status &quot;Evicted&quot;</name>
+                                    <priority>WARNING</priority>
                                 </trigger_prototype>
                             </trigger_prototypes>
                         </item_prototype>
