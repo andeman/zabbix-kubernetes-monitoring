@@ -2,11 +2,11 @@
 [zabbix-kubernetes-monitoring](https://github.com/sleepka/zabbix-kubernetes-monitoring) is zabbix-agent script and template for zabbix server. It is used for Kubernetes monitoring by Zabbix. Easy to deploy and configure. Auto discovery of pods, deployments, services, etc.
 
 # Installation
-1. Copy `k8s-stats.py` to /usr/lib/zabbix/externalscripts and `k8s-stats.json` to /etc/zabbix/ and fix file permissions
+1. Copy `zabbix_check_kubernetes` to /usr/lib/zabbix/externalscripts and `k8s-stats.json` to /etc/zabbix/ and fix file permissions
 ```
-cp k8s-stats.py /usr/lib/zabbix/externalscripts/
+cp zabbix_check_kubernetes /usr/lib/zabbix/externalscripts/
 cp k8s-stats.json /etc/zabbix/
-chmod +x /usr/lib/zabbix/externalscripts/k8s-stats.py
+chmod +x /usr/lib/zabbix/externalscripts/zabbix_check_kubernetes
 chown zabbix. /etc/zabbix/k8s-stats.json
 chmod 640 /etc/zabbix/k8s-stats.json
 ```
